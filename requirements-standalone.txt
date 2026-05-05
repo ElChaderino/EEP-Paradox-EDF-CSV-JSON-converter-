@@ -1,0 +1,5 @@
+# Run from repo root: pip install -r EEG_EDF_Standalone_Tool/requirements-standalone.txt
+numpy>=1.21
+scipy>=1.7
+mne>=1.0
+PyQt5>=5.15

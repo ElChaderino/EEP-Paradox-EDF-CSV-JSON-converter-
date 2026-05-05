@@ -1,0 +1,31 @@
+{
+  "format": "eeg_paradox_tabular_v1",
+  "sfreq": 256.0,
+  "channel_names": [
+    "Fp1",
+    "Fp2",
+    "F7",
+    "F3",
+    "Fz",
+    "F4",
+    "F8",
+    "T3",
+    "C3",
+    "Cz",
+    "C4",
+    "T4",
+    "T5",
+    "P3",
+    "Pz",
+    "P4",
+    "T6",
+    "O1",
+    "O2"
+  ],
+  "unit": "uV",
+  "csv_file": "TEST_tabular.csv",
+  "n_channels": 19,
+  "n_samples": 15360,
+  "duration_s": 59.99609375,
+  "source_edf": "E:\\EEG Paradox 1.0.4\\EEG Paradox Viewer v2.9.1\\EEG_EDF_Standalone_Tool\\TEST.edf"
+}

@@ -1,0 +1,4 @@
+# Minimal deps for running EDF Studio + building the Windows exe (use inside a fresh venv).
+-r requirements-standalone.txt
+pyinstaller>=6.0
+pillow>=9.0

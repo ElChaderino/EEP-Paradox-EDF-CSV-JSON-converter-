@@ -1,0 +1,129 @@
+{
+  "format": "eeg_paradox_tabular_v1",
+  "sfreq": 256.0,
+  "channel_names": [
+    "Fp1",
+    "Fp2",
+    "F7",
+    "F3",
+    "Fz",
+    "F4",
+    "F8",
+    "T3",
+    "C3",
+    "Cz",
+    "C4",
+    "T4",
+    "T5",
+    "P3",
+    "Pz",
+    "P4",
+    "T6",
+    "O1",
+    "O2"
+  ],
+  "unit": "uV",
+  "csv_file": "TEST_tabular.csv",
+  "n_channels": 19,
+  "n_samples": 15360,
+  "duration_s": 59.99609375,
+  "duration": 60,
+  "sample_rate": 256,
+  "num_channels": 19,
+  "features": {
+    "normal_rhythms": [
+      "alpha",
+      "smr",
+      "low_beta",
+      "high_beta",
+      "theta",
+      "delta",
+      "mu",
+      "gamma",
+      "lambda",
+      "kappa"
+    ],
+    "abnormal_patterns": [],
+    "artifacts": [
+      "eye_blink",
+      "eye_movement",
+      "muscle",
+      "heart",
+      "sweat",
+      "electrode_pop",
+      "60hz_noise"
+    ],
+    "sleep_stages": false,
+    "seizure_pattern": false,
+    "psychiatric_condition": "grateful_head",
+    "tbi_severity": null,
+    "medication": null,
+    "eye_state": "EC",
+    "eye_transitions": false,
+    "advanced_spindles": true,
+    "random_transients": true,
+    "eye_movements": true,
+    "wickets": false,
+    "spindle_complexity": 0.5,
+    "advanced_artifacts": {
+      "blink_probability": 0.1,
+      "emg_probability": 0.15,
+      "ekg_probability": 0.05,
+      "muscle_burst_probability": 0.1,
+      "sweat_drift_probability": 0.05,
+      "saccade_probability": 0.1,
+      "shoulder_neck_emg_probability": 0.08,
+      "movement_probability": 0.03,
+      "line_noise_probability": 0.02,
+      "temporal_jitter_range": 0.5,
+      "amplitude_variance_scale": 0.3,
+      "spatial_targeting_enabled": true,
+      "blink_channels": [
+        "Fp1",
+        "Fp2"
+      ],
+      "emg_channels": [
+        "T3",
+        "T4"
+      ],
+      "ekg_channels": [
+        "Fp1",
+        "Fp2"
+      ],
+      "muscle_channels": [
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "sweat_channels": [
+        "Fp1",
+        "Fp2",
+        "T3",
+        "T4",
+        "O1",
+        "O2"
+      ],
+      "saccade_channels": [
+        "F7",
+        "F8",
+        "Fp1",
+        "Fp2"
+      ],
+      "shoulder_neck_channels": [
+        "T5",
+        "T6",
+        "P3",
+        "P4"
+      ],
+      "movement_channels": [
+        "all"
+      ],
+      "line_noise_channels": [
+        "all"
+      ]
+    }
+  },
+  "preset_name": "grateful_head",
+  "preset_description": "The Grateful Head: Mixed frequency fields with specific alpha/beta patterns"
+}
