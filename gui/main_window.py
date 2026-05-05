@@ -44,12 +44,17 @@ from EEG_EDF_Standalone_Tool.resources import resource_path
 class MainWindow(ConvertTabMixin, QMainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
+        self.sim_gui = None
+        self._simulator_load_error: Optional[str] = None
         try:
             from modules_pyqt5.eeg_signal_simulator import EEGSimulatorGUI
-
-            self.sim_gui = EEGSimulatorGUI()
-        except ImportError:
-            self.sim_gui = None
+        except ImportError as e:
+            self._simulator_load_error = str(e)
+        else:
+            try:
+                self.sim_gui = EEGSimulatorGUI()
+            except Exception as e:
+                self._simulator_load_error = f"{type(e).__name__}: {e}"
 
         managed_files.ensure_managed_folders()
         self._last_signal: Optional[Dict[str, Any]] = None
@@ -109,6 +114,13 @@ class MainWindow(ConvertTabMixin, QMainWindow):
         body.setOpenExternalLinks(False)
         lay.addWidget(title)
         lay.addWidget(body)
+        err = getattr(self, "_simulator_load_error", None)
+        if err:
+            detail = QLabel()
+            detail.setWordWrap(True)
+            detail.setTextInteractionFlags(Qt.TextSelectableByMouse)
+            detail.setPlainText(f"Details:\n{err}")
+            lay.addWidget(detail)
         lay.addStretch()
         outer.setLayout(lay)
         return outer
