@@ -36,7 +36,6 @@ from PyQt5.QtWidgets import (
 from EEG_EDF_Standalone_Tool import managed_files, tabular_edf
 from EEG_EDF_Standalone_Tool.gui.convert_tab_mixin import ConvertTabMixin
 from EEG_EDF_Standalone_Tool.gui.file_manager import FileManagerWidget
-from EEG_EDF_Standalone_Tool.gui.simulator_custom_panel import SimulatorCustomPanel
 from EEG_EDF_Standalone_Tool.gui.styles import application_stylesheet
 from EEG_EDF_Standalone_Tool.gui.trace_viewer import TraceViewerWidget
 from EEG_EDF_Standalone_Tool.resources import resource_path
@@ -45,10 +44,14 @@ from EEG_EDF_Standalone_Tool.resources import resource_path
 class MainWindow(ConvertTabMixin, QMainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        from modules_pyqt5.eeg_signal_simulator import EEGSimulatorGUI
+        try:
+            from modules_pyqt5.eeg_signal_simulator import EEGSimulatorGUI
+
+            self.sim_gui = EEGSimulatorGUI()
+        except ImportError:
+            self.sim_gui = None
 
         managed_files.ensure_managed_folders()
-        self.sim_gui = EEGSimulatorGUI()
         self._last_signal: Optional[Dict[str, Any]] = None
         self.file_manager: Optional[FileManagerWidget] = None
 
@@ -76,7 +79,39 @@ class MainWindow(ConvertTabMixin, QMainWindow):
 
         central.setLayout(root)
         self.setCentralWidget(central)
-        self.statusBar().showMessage("Ready - convert files or generate EEG.", 8000)
+        if self.sim_gui:
+            self.statusBar().showMessage("Ready — convert files or generate EEG.", 8000)
+        else:
+            self.statusBar().showMessage(
+                "Simulator unavailable without modules_pyqt5 — Convert & Traces work; see Simulate tab.",
+                12000,
+            )
+
+    def _build_simulate_unavailable_placeholder(self) -> QWidget:
+        """Shown when modules_pyqt5 is not installed (flat GitHub clone)."""
+        outer = QWidget()
+        lay = QVBoxLayout()
+        lay.setSpacing(16)
+        lay.setContentsMargins(24, 24, 24, 24)
+        title = QLabel("Simulate tab unavailable")
+        title.setObjectName("HeaderTitle")
+        body = QLabel(
+            "<p>The preset &amp; custom EEG simulator lives in the <b>modules_pyqt5</b> package "
+            "from the full EEG Paradox Viewer repository.</p>"
+            "<p><b>Option A — full simulator:</b> Copy the <code>modules_pyqt5</code> folder "
+            "into this project directory (next to <code>main.py</code>), then restart.</p>"
+            "<p><b>Option B — converter only:</b> Run <code>python main_lite.py</code> "
+            "(Convert tab only, smaller footprint).</p>"
+            "<p><b>Monorepo:</b> Run from the parent repo so <code>modules_pyqt5</code> is on PYTHONPATH.</p>"
+        )
+        body.setWordWrap(True)
+        body.setTextFormat(Qt.RichText)
+        body.setOpenExternalLinks(False)
+        lay.addWidget(title)
+        lay.addWidget(body)
+        lay.addStretch()
+        outer.setLayout(lay)
+        return outer
 
     def _build_header(self) -> QFrame:
         frame = QFrame()
@@ -117,6 +152,9 @@ class MainWindow(ConvertTabMixin, QMainWindow):
         return frame
 
     def _build_simulate_tab(self) -> QWidget:
+        if self.sim_gui is None:
+            return self._build_simulate_unavailable_placeholder()
+
         w = QWidget()
         outer = QVBoxLayout()
         outer.setSpacing(12)
@@ -357,6 +395,8 @@ class MainWindow(ConvertTabMixin, QMainWindow):
         return pw
 
     def _build_custom_subtab(self) -> QWidget:
+        from EEG_EDF_Standalone_Tool.gui.simulator_custom_panel import SimulatorCustomPanel
+
         cw = QWidget()
         cv = QVBoxLayout()
         cv.setSpacing(12)

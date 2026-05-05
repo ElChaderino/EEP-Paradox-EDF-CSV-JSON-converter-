@@ -4,7 +4,7 @@ Full custom EEG simulator controls (parity with viewer Custom tab + preset-only 
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Tuple
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
@@ -22,7 +22,8 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from modules_pyqt5.eeg_signal_simulator import EEGSimulatorGUI, SignalParameters
+if TYPE_CHECKING:
+    from modules_pyqt5.eeg_signal_simulator import EEGSimulatorGUI
 
 
 def _combo_add_none(combo: QComboBox, none_label: str = "None") -> None:
@@ -311,7 +312,7 @@ class SimulatorCustomPanel(QWidget):
         if not name or name not in self.sim_gui.presets:
             return
         preset = self.sim_gui.presets[name]
-        p: SignalParameters = preset["params"]
+        p = preset["params"]
         self.duration_spin.setValue(float(p.duration))
         self.sample_rate_spin.setValue(int(p.sample_rate))
         self.amplitude_spin.setValue(float(p.amplitude))
@@ -362,8 +363,10 @@ class SimulatorCustomPanel(QWidget):
                 return
         combo.setCurrentIndex(0)
 
-    def collect(self) -> Tuple[SignalParameters, Dict[str, Any]]:
+    def collect(self) -> Tuple["SignalParameters", Dict[str, Any]]:
         """Build SignalParameters and kwargs for generate_comprehensive_signal."""
+        from modules_pyqt5.eeg_signal_simulator import SignalParameters
+
         params = SignalParameters(
             duration=float(self.duration_spin.value()),
             amplitude=float(self.amplitude_spin.value()),

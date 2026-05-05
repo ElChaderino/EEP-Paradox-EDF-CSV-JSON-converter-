@@ -112,7 +112,7 @@ Rooted at **`managed_outputs`** next to the tool package, with **`conversions`**
 
 `main.py` detects both layouts. **`One_Click_Setup.bat`** and **`Run_EDF_Studio.bat`** also support both (folder name `EEG_EDF_Standalone_Tool` vs flat root).
 
-**Simulate tab (full Studio):** requires the **`modules_pyqt5`** package (same as the main EEG Paradox Viewer). In a **flat** repo it must live **next to `main.py`** (copy the `modules_pyqt5` folder from the full viewer repository into your project root). Without it, run **`main_lite.py`** for converter-only, or use the frozen **Lite** executable build.
+**Simulate tab (full Studio):** uses **`modules_pyqt5`** (same package as the main EEG Paradox Viewer). In a **flat** repo, copy that folder **next to `main.py`** for full presets/custom simulation. **`python main.py` still starts** without it — **Convert**, **Traces**, and **Files** work; **Simulate** shows setup instructions instead of crashing. For converter-only, use **`main_lite.py`** or the frozen **Lite** build.
 
 | Goal | How |
 |------|-----|
