@@ -43,12 +43,12 @@ def _ensure_repo_on_path() -> Path:
     if pkg_name not in sys.modules:
         pkg = types.ModuleType(pkg_name)
         pkg.__path__ = [str(here)]
-        pkg.__spec__ = importlib.machinery.ModuleSpec(
-            pkg_name,
-            loader=None,
-            is_package=True,
-            submodule_search_locations=[str(here)],
-        )
+        spec = importlib.machinery.ModuleSpec(pkg_name, loader=None, is_package=True)
+        try:
+            spec.submodule_search_locations = [str(here)]
+        except (AttributeError, TypeError):
+            pass
+        pkg.__spec__ = spec
         sys.modules[pkg_name] = pkg
     if str(here) not in sys.path:
         sys.path.insert(0, str(here))
